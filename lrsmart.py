@@ -140,7 +140,7 @@ def main():
         handler = logging.FileHandler(args.log, "a", "utf-8")
         handler.setFormatter(logging.Formatter("%(asctime)s - %(message)s"))
         log.addHandler(handler)
-    log = logging.getLogger()
+    log = logging.getLogger("lrtools")
     log.info("lrsmart start")
 
     #

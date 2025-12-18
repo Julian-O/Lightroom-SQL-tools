@@ -356,7 +356,7 @@ class LRSelectGeneric:
             return self.lrdb.cursor
 
         # logging
-        log = logging.getLogger()
+        log = logging.getLogger("lrtools")
         log.info('select_generic("%s" "%s")', columns, criters)
 
         fields = []

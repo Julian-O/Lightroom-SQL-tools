@@ -115,7 +115,7 @@ class LRCatDB:
         self.lrcat_file = lrcat_file
         if not os.path.exists(self.lrcat_file):
             raise LRCatException("LR catalog doesn't exist")
-        log = logging.getLogger()
+        log = logging.getLogger("lrtools")
         log.info(
             "sqlite3 binding version : %s , sqlite3 version : %s",
             sqlite3.version,

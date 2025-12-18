@@ -26,7 +26,7 @@ from lrtools.display import display_results
 DEFAULT_COLUMNS = "name,datecapt"
 
 # pylint: disable=invalid-name
-log = logging.getLogger()
+log = logging.getLogger("lrtools")
 
 
 def main():

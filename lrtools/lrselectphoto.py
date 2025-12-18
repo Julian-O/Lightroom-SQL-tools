@@ -646,7 +646,7 @@ class LRSelectPhoto(LRSelectGeneric):
         def reorder(val1, val2):
             return min(val1, val2), max(val1, val2)
 
-        log = logging.getLogger()
+        log = logging.getLogger("lrtools")
         re_gpsw = re.compile(
             r"([\d\-\.]+);([\d\-\.]+)\+([\d\.]+)"
         )  # 45.78;-2.54+100
