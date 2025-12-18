@@ -6,7 +6,7 @@
 Configuration for LRTool
 
 """
-
+import logging
 import sys
 import os
 from configparser import ConfigParser
@@ -60,11 +60,10 @@ class LRToolConfig(metaclass=Singleton):
 
         try:
             self.load(CONFIG_FILENAME)
-        except LRConfigException:
-            print(
-                "WARNING: failed to read config file",
-                CONFIG_FILENAME,
-                file=sys.stderr,
+        except LRConfigException as e:
+            logging.getLogger("lrtools").warning(
+                "Failed to read config file %s: %s",
+                (CONFIG_FILENAME, e)
             )
 
     def load(self, filename):
