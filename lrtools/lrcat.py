@@ -9,15 +9,18 @@ import os
 import sys
 import sqlite3
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from dateutil import parser
 
-from . import DATE_REF, localzone, utczone
+from . import localzone, utczone
 
 # config is loaded on import
 from .lrtoolconfig import lrt_config
 
 from .slpp import SLPP
+
+# date reference of lightroom (at least for timestamp of photos modified)
+DATE_REF = datetime(2001, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
 
 
 def date_to_lrstamp(mydate, localtz=True):
