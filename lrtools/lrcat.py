@@ -19,8 +19,8 @@ from .lrtoolconfig import lrt_config
 
 from .slpp import SLPP
 
-# date reference of lightroom (at least for timestamp of photos modified)
-DATE_REF = datetime(2001, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
+# Lightroom's epoch date (at least for timestamp of photos modified)
+LIGHTROOM_EPOCH_DATETIME = datetime(2001, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
 
 
 def date_to_lrstamp(mydate, localtz=True):
@@ -38,7 +38,7 @@ def date_to_lrstamp(mydate, localtz=True):
         dtdate = mydate
     else:
         return None
-    ts = (dtdate - DATE_REF).total_seconds()
+    ts = (dtdate - LIGHTROOM_EPOCH_DATETIME).total_seconds()
     return ts if ts >= 0 else 0
 
 
