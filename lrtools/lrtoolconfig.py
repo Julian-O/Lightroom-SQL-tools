@@ -10,7 +10,6 @@ Configuration for LRTool
 import sys
 import os
 from configparser import ConfigParser
-from dateutil import parser as dateparser
 
 
 class Singleton(type):
