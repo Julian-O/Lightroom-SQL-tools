@@ -38,7 +38,6 @@ class Singleton(type):
 CONFIG_FILENAME = "lrtools.ini"
 # sections
 CONFIG_MAIN = "Main"
-CONFIG_ARCHVOL = "ArchiveVolume"
 
 
 class LRConfigException(Exception):
