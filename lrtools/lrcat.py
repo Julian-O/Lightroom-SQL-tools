@@ -13,22 +13,18 @@ from datetime import datetime, timezone
 from dateutil import parser
 
 from . import localzone, utczone
-
-# config is loaded on import
-from .lrtoolconfig import lrt_config
-
 from .slpp import SLPP
 
 # Lightroom's epoch date (at least for timestamp of photos modified)
 LIGHTROOM_EPOCH_DATETIME = datetime(2001, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
 
 
-def date_to_lrstamp(mydate, localtz=True):
+def date_to_lrstamp(mydate, dayfirst, localtz=True):
     """
     convert localized time string or datetime date to a lightroom timestamp : seconds (float) from 1/1/2001
     """
     if isinstance(mydate, str):
-        dtdate = parser.parse(mydate, dayfirst=lrt_config.dayfirst)
+        dtdate = parser.parse(mydate, dayfirst=dayfirst)
         # set locale timezone
         if localtz:
             dtdate = dtdate.astimezone(localzone)
@@ -90,7 +86,7 @@ class LRCatDB:
     SMART_COLL = 3
 
     def __init__(
-        self, lrcat_file, open_options="mode=ro&cache=private&immutable=1"
+        self, config, lrcat_file, open_options="mode=ro&cache=private&immutable=1"
     ):
         self.conn = self.cursor = self.lrdb_version = None
 
@@ -129,7 +125,7 @@ class LRCatDB:
                 open_options,
             )
             raise LRCatException("Unable to open LR catalog")
-        self.lrphoto = LRSelectPhoto(self)
+        self.lrphoto = LRSelectPhoto(config, self)
 
     def has_basename(self, name):
         """

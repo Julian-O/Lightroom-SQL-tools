@@ -13,7 +13,6 @@ from datetime import datetime
 
 from .lrselectgeneric import LRSelectGeneric, LRSelectException
 from .gps import geocodage, square_around_location
-from .lrtoolconfig import lrt_config
 
 
 class LRSelectPhoto(LRSelectGeneric):
@@ -21,9 +20,10 @@ class LRSelectPhoto(LRSelectGeneric):
     Build select request for photo table Adobe_images
     """
 
-    def __init__(self, lrdb):
+    def __init__(self, config, lrdb):
         """ """
         super().__init__(
+            config,
             lrdb,  #
             # Table source
             #
@@ -684,7 +684,7 @@ class LRSelectPhoto(LRSelectGeneric):
         elif re_townw.match(value):
             town, width = re_townw.match(value).groups()
             try:
-                (lat, lon), address = geocodage(lrt_config.geocoder, town)
+                (lat, lon), address = geocodage(self.config.geocoder, town)
                 log.info(
                     "Geocodage for %s : %s, %s (%s)", town, lat, lon, address
                 )
@@ -694,8 +694,8 @@ class LRSelectPhoto(LRSelectGeneric):
         elif re_2town.match(value):
             town1, town2 = re_2town.match(value).groups()
             try:
-                (lat1, lon1), address1 = geocodage(lrt_config.geocoder, town1)
-                (lat2, lon2), address2 = geocodage(lrt_config.geocoder, town2)
+                (lat1, lon1), address1 = geocodage(self.config.geocoder, town1)
+                (lat2, lon2), address2 = geocodage(self.config.geocoder, town2)
                 log.info(
                     "Geocodage for %s : %s, %s (%s)",
                     town1,

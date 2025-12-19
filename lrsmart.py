@@ -12,9 +12,7 @@ import logging
 import argparse
 from sqlite3 import OperationalError
 
-# config is loaded on import
-from lrtools.lrtoolconfig import lrt_config, LRConfigException
-
+from lrtools.lrtoolconfig import LRToolConfig, LRConfigException
 from lrtools.lrcat import LRCatDB, LRCatException
 from lrtools.lrselectgeneric import LRSelectException
 from lrtools.lrsmartcoll import SQLSmartColl, SmartException
@@ -28,6 +26,9 @@ def main():
     #
     # commands parser
     #
+
+    lrt_config = LRToolConfig()
+
     # prepare description
     criteria = ", ".join(
         [
@@ -168,7 +169,7 @@ def main():
         # specify LR catalog or INI file
         lrt_config.load(args.lrcat)
         args.lrcat = lrt_config.default_lrcat
-    lrdb = LRCatDB(args.lrcat)
+    lrdb = LRCatDB(lrt_config, args.lrcat)
 
     if args.list:
         if not args.smart_name:

@@ -61,7 +61,7 @@ class SQLSmartColl:
         ' ELSE CAST(i.filewidth AS int) || "x" || CAST(i.fileHeight AS int) END) AS dims '
     )
 
-    def __init__(self, lrdb, smart, verbose=False):
+    def __init__(self, config, lrdb, smart, verbose=False):
         """
         Initialize from :
         - lrdb : LRCatDB instance
@@ -83,6 +83,7 @@ class SQLSmartColl:
                 }"
 
         """
+        self.config = config
         self.lrdb = lrdb
         self.smart = smart
         self.verbose = verbose
@@ -176,8 +177,8 @@ class SQLSmartColl:
     def criteria_touchTime(self):
         """criteria touchTime"""
         # convert and shift of 24 hours for end of day
-        touchtime1 = date_to_lrstamp(self.func["value"]) + (24 * 3600)
-        touchtime2 = date_to_lrstamp(self.func["value2"]) + (24 * 3600)
+        touchtime1 = date_to_lrstamp(self.func["value"], self.config.dayfirst) + (24 * 3600)
+        touchtime2 = date_to_lrstamp(self.func["value2"], self.config.dayfirst) + (24 * 3600)
         if self.func["operation"] == "in":
             self.sql += self._complete_sql(
                 "",
@@ -214,7 +215,7 @@ class SQLSmartColl:
 
     def criteria_collection(self):
         """criteria collection"""
-        lrcollection = LRSelectCollection(self.lrdb)
+        lrcollection = LRSelectCollection(self.config, self.lrdb)
         if self.func["operation"] in ["all", "beginsWith", "endsWith"]:
             what = {
                 "all": '"%%%s%%"',

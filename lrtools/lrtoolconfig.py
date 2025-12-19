@@ -11,29 +11,6 @@ import sys
 import os
 from configparser import ConfigParser
 
-
-class Singleton(type):
-    """
-    For unique instance of a class
-    Usage:
-        class Logger(object):
-            __metaclass__ = Singleton
-            ...
-
-        log = Logger()
-
-    """
-
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            cls._instances[cls] = super(Singleton, cls).__call__(
-                *args, **kwargs
-            )
-        return cls._instances[cls]
-
-
 # config file
 CONFIG_FILENAME = "lrtools.ini"
 # sections
@@ -44,12 +21,12 @@ class LRConfigException(Exception):
     """lrtools config exception"""
 
 
-class LRToolConfig(metaclass=Singleton):
+class LRToolConfig:
     """
     Singleton class for LRTools config
     """
 
-    def __init__(self):
+    def __init__(self, config_filename="lrtools.ini"):
         """load default config"""
         self.default_lrcat = (
             "C:\\Users\\Default\\Documents\\My Lightroom Catalog.lrcat"
@@ -58,11 +35,11 @@ class LRToolConfig(metaclass=Singleton):
         self.geocoder = "nominatim"
 
         try:
-            self.load(CONFIG_FILENAME)
+            self.load(config_filename)
         except LRConfigException as e:
             logging.getLogger("lrtools").warning(
                 "Failed to read config file %s: %s",
-                (CONFIG_FILENAME, e)
+                (config_filename, e)
             )
 
     def load(self, filename):
@@ -95,5 +72,3 @@ class LRToolConfig(metaclass=Singleton):
                 f'Failed to read config file "{filename}"'
             ) from _e
 
-
-lrt_config = LRToolConfig()

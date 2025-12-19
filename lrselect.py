@@ -14,14 +14,12 @@ from argparse import RawTextHelpFormatter
 import sqlite3
 
 # config is loaded on import
-from lrtools.lrtoolconfig import lrt_config, LRConfigException
-
+from lrtools.lrtoolconfig import LRToolConfig, LRConfigException
 from lrtools.lrcat import LRCatDB, LRCatException
 from lrtools.lrselectgeneric import LRSelectException
 from lrtools.lrselectphoto import LRSelectPhoto
 from lrtools.lrselectcollection import LRSelectCollection
 from lrtools.display import display_results
-
 
 DEFAULT_COLUMNS = "name,datecapt"
 
@@ -31,6 +29,8 @@ log = logging.getLogger("lrtools")
 
 def main():
     """Main entry from command line"""
+
+    lrt_config = LRToolConfig()
 
     #
     # command parser
@@ -182,13 +182,13 @@ def main():
         # not a catalog but an INI file
         lrt_config.load(args.lrcat)
         args.lrcat = lrt_config.default_lrcat
-    lrdb = LRCatDB(args.lrcat)
+    lrdb = LRCatDB(lrt_config, args.lrcat)
 
     # select on which table to work
     if args.table == "photo":
         lrobj = lrdb.lrphoto
     else:
-        lrobj = LRSelectCollection(lrdb)
+        lrobj = LRSelectCollection(lrt_config, lrdb)
 
     if not (args.sql or args.count or args.results):
         print('WARNING: option "--count" forced')
