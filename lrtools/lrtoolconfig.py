@@ -42,8 +42,7 @@ class LRToolConfig:
                 self.load(config_filename)
             except LRConfigException as e:
                 logging.getLogger("lrtools").warning(
-                    "Failed to read config file %s: %s",
-                    (config_filename, e)
+                    "Failed to read config file %s: %s", (config_filename, e)
                 )
 
     def load(self, filename):
@@ -75,4 +74,3 @@ class LRToolConfig:
             raise LRConfigException(
                 f'Failed to read config file "{filename}"'
             ) from _e
-
