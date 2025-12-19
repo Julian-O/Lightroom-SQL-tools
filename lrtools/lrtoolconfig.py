@@ -23,7 +23,10 @@ class LRConfigException(Exception):
 
 class LRToolConfig:
     """
-    Singleton class for LRTools config
+    Data structure for storing system-wide configs.
+
+    Will load from a file, unless config_filename is None.
+    Default config file is called "lrtools.ini" in the current directory.
     """
 
     def __init__(self, config_filename="lrtools.ini"):
@@ -34,13 +37,14 @@ class LRToolConfig:
         self.dayfirst = True
         self.geocoder = "nominatim"
 
-        try:
-            self.load(config_filename)
-        except LRConfigException as e:
-            logging.getLogger("lrtools").warning(
-                "Failed to read config file %s: %s",
-                (config_filename, e)
-            )
+        if config_filename:
+            try:
+                self.load(config_filename)
+            except LRConfigException as e:
+                logging.getLogger("lrtools").warning(
+                    "Failed to read config file %s: %s",
+                    (config_filename, e)
+                )
 
     def load(self, filename):
         """load a config file"""
